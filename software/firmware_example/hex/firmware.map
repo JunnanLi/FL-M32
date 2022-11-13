@@ -1,0 +1,195 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+timer_irq_count     0x4               main.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+ram              0x0000000000000000 0x0000000000010000 axrwl
+ram_data         0x0000000000020000 0x0000000000020000 axrwl
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000000000180                PROVIDE (__boot_address, 0x180)
+                0x0000000000001000                __stack_size = DEFINED (__stack_size)?__stack_size:0x1000
+                [!provide]                        PROVIDE (__stack_size, __stack_size)
+
+.vectors        0x0000000000000000      0x100
+                0x0000000000000000                PROVIDE (__vector_start, .)
+ *(.vectors)
+ .vectors       0x0000000000000000      0x100 vectors.o
+
+.init           0x0000000000000180       0xf2
+ *(SORT(.init))
+ *(.text.start)
+ .text.start    0x0000000000000180       0xf2 crt0.o
+                0x0000000000000180                _start
+                0x00000000000001a8                __test_custom_instr
+                0x000000000000022e                __to_recv_pkt
+                0x0000000000000240                __test_proc_pkt
+                0x0000000000000252                __to_send_pkt
+                0x0000000000000260                __dma_recv_pkt
+
+.text           0x0000000000000272      0x816
+ *(.text.unlikely .text.*_unlikely .text.unlikely.*)
+ *(.text.exit .text.exit.*)
+ *(.text.startup .text.startup.*)
+ .text.startup  0x0000000000000272       0xca main.o
+                0x0000000000000272                main
+ *(.text.hot .text.hot.*)
+ *(.text .stub .text.* .gnu.linkonce.t.*)
+ .text          0x000000000000033c        0x0 crt0.o
+ .text          0x000000000000033c       0x62 main.o
+                0x000000000000033c                rv_send
+                0x0000000000000362                rv_recv
+ .text          0x000000000000039e      0x41a system.o
+                0x000000000000039e                print_chr
+                0x00000000000003a6                print_str
+                0x00000000000003b8                print_dec
+                0x00000000000003ee                print_hex
+                0x0000000000000522                print_void
+                0x0000000000000524                printf
+                0x0000000000000542                sys_gettime
+                0x0000000000000554                memcpy
+                0x000000000000056c                memset
+                0x000000000000057e                memcmp
+                0x00000000000005a2                memmove
+                0x00000000000005e2                strnlen
+                0x00000000000005fc                strlen
+                0x000000000000060e                strcpy
+                0x0000000000000688                strcmp
+                0x0000000000000732                strncmp
+                0x0000000000000760                atoi
+ .text          0x00000000000007b8       0xf0 irq.o
+                0x00000000000007b8                uart_echo
+                0x00000000000007f4                uart_irq_handler
+                0x00000000000007f6                dma_irq_handler
+                0x0000000000000816                time_irq_handler
+                0x000000000000082a                irq_puts
+                0x0000000000000836                mstatus_enable
+                0x000000000000085c                mstatus_disable
+                0x0000000000000886                irq_init
+ .text          0x00000000000008a8        0x0 vectors.o
+ .text.vecs     0x00000000000008a8      0x1e0 vectors.o
+ .text          0x0000000000000a88        0x0 custom_ops.o
+ *(.gnu.warning)
+                [!provide]                        PROVIDE (__etext, .)
+                [!provide]                        PROVIDE (_etext, .)
+                [!provide]                        PROVIDE (etext, .)
+
+.rodata         0x0000000000020000      0x120
+ *(.rodata .rodata.* .gnu.linkonce.r.*)
+ .rodata.str1.4
+                0x0000000000020000       0x2f main.o
+ *fill*         0x000000000002002f        0x1 
+ .rodata.str1.4
+                0x0000000000020030       0x11 system.o
+ *fill*         0x0000000000020041        0x3 
+ .rodata.str1.4
+                0x0000000000020044       0x1c irq.o
+ .rodata        0x0000000000020060       0xc0 vectors.o
+
+.rela.dyn       0x0000000000020120        0x0
+ .rela.text.start
+                0x0000000000020120        0x0 crt0.o
+ .rela.text.startup
+                0x0000000000020120        0x0 crt0.o
+ .rela.text     0x0000000000020120        0x0 crt0.o
+
+.rodata1
+ *(.rodata1)
+                0x0000000000021120                . = DATA_SEGMENT_ALIGN (CONSTANT (MAXPAGESIZE), CONSTANT (COMMONPAGESIZE))
+
+.data           0x0000000000020120        0x0
+                0x0000000000020120                __DATA_BEGIN__ = .
+ *(.data .data.* .gnu.linkonce.d.*)
+ .data          0x0000000000020120        0x0 crt0.o
+ .data          0x0000000000020120        0x0 main.o
+ .data          0x0000000000020120        0x0 system.o
+ .data          0x0000000000020120        0x0 irq.o
+ .data          0x0000000000020120        0x0 vectors.o
+ .data          0x0000000000020120        0x0 custom_ops.o
+
+.sdata          0x0000000000020120        0x0
+                0x0000000000020120                __SDATA_BEGIN__ = .
+ *(.srodata.cst16)
+ *(.srodata.cst8)
+ *(.srodata.cst4)
+ *(.srodata.cst2)
+ *(.srodata .srodata.*)
+ *(.sdata .sdata.* .gnu.linkonce.s.*)
+                0x0000000000020120                _edata = .
+                [!provide]                        PROVIDE (edata, .)
+                0x0000000000020120                . = .
+                0x0000000000020120                __bss_start = .
+
+.sbss           0x0000000000020120        0x8
+ *(.dynsbss)
+ *(.sbss .sbss.* .gnu.linkonce.sb.*)
+ .sbss          0x0000000000020120        0x8 irq.o
+                0x0000000000020120                mmstatus
+                0x0000000000020124                ie_mask32_std
+ *(.scommon)
+
+.bss            0x0000000000020128       0x24
+ *(.dynbss)
+ *(.bss .bss.* .gnu.linkonce.b.*)
+ .bss           0x0000000000020128        0x0 crt0.o
+ .bss           0x0000000000020128       0x20 main.o
+                0x0000000000020128                meta_buffer
+ .bss           0x0000000000020148        0x0 system.o
+ .bss           0x0000000000020148        0x0 irq.o
+ .bss           0x0000000000020148        0x0 vectors.o
+ .bss           0x0000000000020148        0x0 custom_ops.o
+ *(COMMON)
+ COMMON         0x0000000000020148        0x4 main.o
+                0x0000000000020148                timer_irq_count
+                0x000000000002014c                . = ALIGN ((. != 0x0)?0x4:0x1)
+                0x000000000002014c                . = ALIGN (0x4)
+                0x000000000002014c                . = SEGMENT_START ("ldata-segment", .)
+                0x000000000002014c                . = ALIGN (0x4)
+                0x000000000002014c                __BSS_END__ = .
+                0x000000000002014c                __bss_end = .
+                0x0000000000020920                __global_pointer$ = MIN ((__SDATA_BEGIN__ + 0x800), MAX ((__DATA_BEGIN__ + 0x800), (__BSS_END__ - 0x800)))
+                0x000000000002014c                _end = .
+                [!provide]                        PROVIDE (end, .)
+                0x000000000002014c                . = DATA_SEGMENT_END (.)
+
+.stack          0x0000000000020150     0x1000
+                [!provide]                        PROVIDE (__stack_start, .)
+                0x0000000000001000                . = __stack_size
+ *fill*         0x0000000000020150     0x1000 
+                0x0000000000021150                PROVIDE (_sp, .)
+                [!provide]                        PROVIDE (__stack_end, .)
+LOAD crt0.o
+LOAD main.o
+LOAD system.o
+LOAD irq.o
+LOAD vectors.o
+LOAD custom_ops.o
+LOAD /home/lijunnan/Documents/2-software/v1.0.16-pulp-riscv-gcc-ubuntu-18/bin/../lib/gcc/riscv32-unknown-elf/7.1.1/libgcc.a
+OUTPUT(firmware.elf elf32-littleriscv)
+
+.Pulp_Chip.Info
+                0x0000000000000000       0x4e
+ .Pulp_Chip.Info
+                0x0000000000000000       0x4e crt0.o
+ .Pulp_Chip.Info
+                0x000000000000004e        0x0 main.o
+ .Pulp_Chip.Info
+                0x000000000000004e        0x0 system.o
+ .Pulp_Chip.Info
+                0x000000000000004e        0x0 irq.o
+ .Pulp_Chip.Info
+                0x000000000000004e        0x0 vectors.o
+ .Pulp_Chip.Info
+                0x000000000000004e        0x0 custom_ops.o
+
+.comment        0x0000000000000000       0x1a
+ .comment       0x0000000000000000       0x1a main.o
+                                         0x1b (size before relaxing)
+ .comment       0x000000000000001a       0x1b system.o
+ .comment       0x000000000000001a       0x1b irq.o
