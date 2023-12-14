@@ -1,0 +1,6 @@
+[submodule "FL-M32_Remote_Controller"]
+	path = FL-M32_Remote_Controller
+	url = git@github.com:JunnanLi/FL-M32_Remote_Controller.git
+[submodule "FL-M32_Runtime"]
+	path = FL-M32_Runtime
+	url = git@github.com:JunnanLi/FL-M32_Runtime.git
