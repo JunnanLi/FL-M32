@@ -4,3 +4,6 @@
 [submodule "FL-M32_Runtime"]
 	path = FL-M32_Runtime
 	url = git@github.com:JunnanLi/FL-M32_Runtime.git
+[submodule "FL-M32_simNIC"]
+	path = FL-M32_simNIC
+	url = git@github.com:JunnanLi/FL-M32_simNIC.git
