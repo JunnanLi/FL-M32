@@ -163,8 +163,8 @@
     `define CAN_IRQ         24 
   //=========================//
   //* number of ports in MUX
-    `define MUX_OUT         4   
-    `define MUX_IN          4   //* port_a is {dma_0,      pe_1,  pe_0,  pe_3/conf};
+    `define NUM_SRAM        4   
+    `define NUM_SRAM_REQ    4   //* port_a is {dma_0,      pe_1,  pe_0,  pe_3/conf};
                                 //* port_b is {dma_3/dDMA, dma_2, dma_1, pe_2};
   //=========================//
   //* instr/data memory size

@@ -51,7 +51,7 @@ module iCache_Search
   wire  [15:0]                        w_temp_addr;
   wire                                w_cache_miss_ns;
   reg                                 r_lock_gnt;
-  // reg                                 r_icache_gnt_delay;
+  reg                                 r_icache_gnt_delay;
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
 
   //====================================================================//
@@ -74,11 +74,11 @@ module iCache_Search
       o_addr_miss             <= 'b0;
       o_vic_miss              <= ID_WAY;
       r_lock_gnt              <= 1'b1;
-      // r_icache_gnt_delay      <= 1'b1;
+      r_icache_gnt_delay      <= 1'b1;
     end else begin
       r_lock_gnt              <=  (i_resp_miss)? 1'b1: 
                                   (w_cache_miss_ns)? 1'b0: r_lock_gnt;
-      // r_icache_gnt_delay      <= o_icache_gnt;
+      r_icache_gnt_delay      <= o_icache_gnt;
 
       o_icache_rvalid         <= 1'b0;
       o_cache_miss            <= 1'b0;
@@ -135,10 +135,9 @@ module iCache_Search
     end
   end
 
-  // assign w_cache_miss_ns  = o_tag_rden & (w_hit==4'b0);
-  assign w_cache_miss_ns  = o_cache_miss;
-  assign o_tag_rden       = i_icache_req & o_icache_gnt | i_resp_miss;
-  assign o_tag_addr       = (i_resp_miss)? o_addr_miss[2+:ADDR_WIDTH] : i_icache_addr[2+:ADDR_WIDTH];
+  assign w_cache_miss_ns  = o_tag_rden & (w_hit==4'b0);
+  assign o_tag_rden       = i_icache_req & r_icache_gnt_delay | i_resp_miss;
+  assign o_tag_addr       = i_icache_addr[2+:ADDR_WIDTH];
   assign w_temp_addr      = (i_resp_miss)? o_addr_miss[15:0]: i_icache_addr[15:0];
   assign o_icache_gnt     = ~w_cache_miss_ns & r_lock_gnt;
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//

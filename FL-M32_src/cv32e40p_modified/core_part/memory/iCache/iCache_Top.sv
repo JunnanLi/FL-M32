@@ -115,8 +115,7 @@ module iCache_Top
         .i_clk          (i_clk                  ),
         .i_rst_n        (i_rst_n                ),
 
-        .i_icache_req   (i_icache_req[gidx] & 
-                          o_icache_gnt[gidx]    ),
+        .i_icache_req   (i_icache_req[gidx]     ),
         .i_icache_addr  (i_icache_addr[gidx]    ),
         .o_icache_rdata (o_icache_rdata[gidx]   ),
         .o_icache_rvalid(o_icache_rvalid[gidx]  ),
