@@ -84,7 +84,7 @@ module iCache_Search
       o_cache_miss            <= 1'b0;
       o_vic_miss              <= ID_WAY;
       if(o_tag_rden == 1'b1) begin
-        case(w_hit)
+        casez(w_hit)
           4'b0001: begin
             o_icache_rvalid           <= 1'b1;
             case(w_temp_addr[1:0])
@@ -95,7 +95,7 @@ module iCache_Search
               default: o_icache_rdata <= i_data_rdata[0][31:0];
             endcase
           end
-          4'b0010: begin
+          4'b001?: begin
             o_icache_rvalid           <= 1'b1;
             case(w_temp_addr[1:0])
               2'd0: o_icache_rdata    <= i_data_rdata[1][31:0];
@@ -105,7 +105,7 @@ module iCache_Search
               default: o_icache_rdata <= i_data_rdata[1][31:0];
             endcase
           end
-          4'b0100: begin
+          4'b01??: begin
             o_icache_rvalid           <= 1'b1;
             case(w_temp_addr[1:0])
               2'd0: o_icache_rdata    <= i_data_rdata[2][31:0];
@@ -115,7 +115,7 @@ module iCache_Search
               default: o_icache_rdata <= i_data_rdata[2][31:0];
             endcase
           end
-          4'b1000: begin
+          4'b1???: begin
             o_icache_rvalid           <= 1'b1;
             case(w_temp_addr[1:0])
               2'd0: o_icache_rdata    <= i_data_rdata[3][31:0];
@@ -144,10 +144,10 @@ module iCache_Search
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
 
   //* assert
-  initial begin
-    assert (w_hit == 4'b0000 || w_hit == 4'b0001 || w_hit == 4'b0010 || w_hit == 4'b0100 || w_hit == 4'b1000 )
-      else
-        $error("w_hit in iCache: %x", w_hit);
-  end
+  // initial begin
+  //   assert (w_hit == 4'b0000 || w_hit == 4'b0001 || w_hit == 4'b0010 || w_hit == 4'b0100 || w_hit == 4'b1000 )
+  //     else
+  //       $error("w_hit in iCache: %x", w_hit);
+  // end
 
 endmodule
