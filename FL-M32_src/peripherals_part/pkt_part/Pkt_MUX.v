@@ -98,7 +98,7 @@ module Pkt_MUX(
       case(state_mux_out)
         IDLE_S: begin
           o_data_valid              <= 1'b0;
-          if(empty_pktDMA == 1'b0 && rden_pktDMA == 1'b0 && i_data_DRA_valid == 1'b0 &&
+          if(empty_pktDMA == 1'b0 && rden_pktDMA == 1'b0 &&
             i_alf == 1'b0) 
           begin //* read pkt from dma_fifo;
             rden_pktDMA             <= 1'b1;
