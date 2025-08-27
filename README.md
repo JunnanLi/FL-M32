@@ -45,7 +45,7 @@ translation of inference results. Third, an essential switch
 fabric is designed in the data plane for traffic forwarding.
 
 <div align=center>
-<img src="docs/orchestrator_overview.png" width="400px" />
+<img src="docs/data_flow.JPG" width="800px" />
 </div>
 
 
